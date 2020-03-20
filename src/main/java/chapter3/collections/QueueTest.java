@@ -5,10 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class QueueTest {
 
@@ -19,9 +16,9 @@ public class QueueTest {
     public void init(){
         deque = new LinkedList<>();;
         que = deque;
-        deque.add("one");
-        deque.add("two");
-        deque.add("three");
+        for (int i = 1; i < 10; i++) {
+            que.add(String.valueOf(i));
+        }
     }
 
     /**
@@ -31,12 +28,17 @@ public class QueueTest {
     public void tailAdd(){
         que.clear();
         try {
-            que.add("One");
+            que.add("q.add");
+            deque.addLast("dq.addLast");
         } catch (IllegalStateException e) {
             System.out.println("Failed to add element.");
         }
 
-        if(!que.offer( "Two")){
+        if(!que.offer( "q.offer")){
+            System.out.println("Failed to add element.");
+        }
+
+        if(!deque.offerLast( "dq.offerLast")){
             System.out.println("Failed to add element.");
         }
 
@@ -48,19 +50,74 @@ public class QueueTest {
      */
     @Test
     public void headAdd() {
-        print();
+        que.clear();
         try {
-            deque.push("Joker");
-            deque.addFirst("Mega Joker");
+            deque.push("push");
+            deque.addFirst("addFirst");
         } catch (IllegalStateException e) {
+            System.out.println("Failed to add element.");
+        }
+
+        if(!deque.offerFirst("offerFirst")){
             System.out.println("Failed to add element.");
         }
 
         print();
     }
 
-    private void print(){
+    @Test
+    public void headRemove(){
+        print();
 
+        try {
+            que.remove();
+            deque.removeFirst();
+            deque.pop();
+        } catch (NoSuchElementException e) {
+            System.out.println("Failed to remove element.");
+        }
+        que.poll();
+        deque.pollFirst();
+
+        print();
+    }
+
+    @Test
+    public void tailRemove(){
+        print();
+
+        try {
+            deque.removeLast();
+        } catch (NoSuchElementException e) {
+            System.out.println("Failed to remove element.");
+        }
+
+        deque.pollLast();
+
+        print();
+    }
+
+    @Test
+    public void headGet(){
+        print();
+
+        try {
+            System.out.println("q.element = " + que.element());
+            System.out.println("dq.getFirst = " + deque.getFirst());
+        } catch (NoSuchElementException e) {
+            System.out.println("Failed to get head.");
+        }
+
+        System.out.println("q.peek = " + que.peek());
+        System.out.println("dq.peekFirst = " + deque.peekFirst());
+    }
+
+    @Test
+    public void tailGet(){
+
+    }
+
+    private void print(){
         System.out.printf("head-> %s <-tail%n", deque);
     }
 }
